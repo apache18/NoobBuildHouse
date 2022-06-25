@@ -13,13 +13,16 @@ public class AddMoney : MonoBehaviour
     public double[] minusMoney;
     public double[] minusMoney2;
     public long[] addMinusMoney;
-    public long[] countLevel;
+    public double[] countLevel;
     public int[] countLevel2;
+    public double[] countDoxod;
     public Text moneyText;
     public Text[] UpgradeText;
     public Text[] PriceNewLevel;
     public Text[] YlytsitText;
     public Text[] Doxod;
+    public Text[] LevelText;
+    
     public GameObject[] Panel;
     public GameObject[] Player;
     public GameObject noMoneyText;  
@@ -32,15 +35,19 @@ public class AddMoney : MonoBehaviour
     public long[] priceBuyNewLayer2;
     public string[] priceText;
     string YlytsitBykvaText;
+    string DoxodText;
 
     private void Start()
     {
         isCheckMoney = false;
         StartCoroutine(AddMoneyLevel());
         countLevel[0] = 10;
-        for (int i = 0; i <= count.Length - 2; i++)
+        for (int i = 0; i < count.Length; i++)
         {
             count[i] = 1;
+        }
+        for (int i = 0; i <= priceBuyNewLayer.Length - 1; i++) 
+        {
             switch (priceBuyNewLayer[i])
             {
                 case 1000:
@@ -93,44 +100,51 @@ public class AddMoney : MonoBehaviour
             {
                 case 1000: 
                     Panel[0].SetActive(false);
+                    LevelText[0].text = "Слой 2";
                     Player[0].SetActive(true);
                     countLevel[1] = 50;
                     break;
                 case 10000:
                     Panel[1].SetActive(false);
                     Player[1].SetActive(true);
+                    LevelText[1].text = "Слой 3";
                     countLevel[2] = 250;
                     break;
                 case 300000:
                     Panel[2].SetActive(false);
                     Player[2].SetActive(true);
+                    LevelText[2].text = "Слой 4";
                     countLevel[3] = 15000;
                     Debug.Log("123");
-
                     break;
                 case 3000000:
                     Panel[3].SetActive(false);
                     Player[3].SetActive(true);
+                    LevelText[3].text = "Слой 5";
                     countLevel[4] = 150000;
                     break;
                 case 70000000:
                     Panel[4].SetActive(false);
                     Player[4].SetActive(true);
+                    LevelText[4].text = "Слой 6";
                     countLevel[5] = 3500000;
                     break;
                 case 500000000:
                     Panel[5].SetActive(false);
                     Player[5].SetActive(true);
+                    LevelText[5].text = "Зелёный куб";
                     countLevel[6] = 25000000;
                     break;
                 case 10000000000:
                     Panel[6].SetActive(false);
                     Player[6].SetActive(true);
+                    LevelText[6].text = "Слой 8";
                     countLevel[7] = 500000000;
                     break;
                 case 250000000000:
                     Panel[7].SetActive(false);
                     Player[7].SetActive(true);
+                    LevelText[7].text = "Слой 9";
                     countLevel[8] = 12500000000;
                     break;
             }
@@ -155,24 +169,25 @@ public class AddMoney : MonoBehaviour
             isOpenUpgradeImage = false;
         }
     }
-
+ 
     public void MinusUpgradeMoneyInSek(int number)
     {
-        if (Money >= minusMoney[number] && isUpgrade[number] == false)
+        if (Money >= minusMoney[number] && isUpgrade[number] == false && count[number] <= 6)  
         {
-            if (count[number] <= 5)
-            {
-                count[number]++;
-                countLevel[number] += countLevel2[number];
-                Money -= minusMoney[number];
-                minusMoney[number] += addMinusMoney[number];
-            }
-            if (count[number] == 6)
-            {
-                isUpgrade[number] = true;
-                UpgradeText[number].text = "max";
-            }
-        }      
+            countLevel[number] += countLevel2[number];
+            Money -= minusMoney[number];
+            minusMoney[number] += addMinusMoney[number];
+            count[number]++;
+        }
+        if (count[number] == 5)
+        {
+            UpgradeText[number].text = "max";
+            isUpgrade[number] = true;
+        }
+        else if (Money < minusMoney[number]) 
+        {
+            StartCoroutine(OpenNoMoney());
+        }
     }
 
     void CheckMoney()
@@ -229,16 +244,36 @@ public class AddMoney : MonoBehaviour
                 minusMoney2[i] = minusMoney[i] / 1000000000;
                 YlytsitBykvaText = "B";
             }
+            if (countLevel[i] >= 1000 && countLevel[i] < 1000000)
+            {
+                countDoxod[i] =  countLevel[i] / 1000;
+                DoxodText = "К";
+            }
+            else if(countLevel[i] >= 1000000 && countLevel[i] < 1000000000)
+            {
+                countDoxod[i] = countLevel[i] / 1000000;
+                DoxodText = "М";
+            }
+            else if (countLevel[i] >= 1000000000)
+            {
+                countDoxod[i] = countLevel[i] / 1000000000;
+                DoxodText = "B";
+            }
+            else
+            {
+                countDoxod[i] = countLevel[i];
+                DoxodText = "";
+            }
             if (isUpgrade[i] == false)
             {
                 UpgradeText[i].text = count[i] + "/6";
                 YlytsitText[i].text = "УЛУЧШИТЬ: " + minusMoney2[i] + YlytsitBykvaText;
-                Doxod[i].text = "ДОХОД: " + countLevel[i] + "/УДАР";
             }
             else
             {
                 YlytsitText[i].text = "УЛУЧШИТЬ: " + " МАКС";
             }
+            Doxod[i].text = "ДОХОД: " + countDoxod[i] + DoxodText + "/УДАР";
         }
     }
 
