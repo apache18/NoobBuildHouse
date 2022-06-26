@@ -33,6 +33,7 @@ public class AddMoney : MonoBehaviour
     public Text[] LevelText;
     public Text AutomatizationDoxodText;
     public Text AutomatizationDoxodPriceText;
+    public Text timer;
     public GameObject[] Panel;
     public GameObject[] Player;
     public GameObject noMoneyText;  
@@ -43,6 +44,7 @@ public class AddMoney : MonoBehaviour
     bool isCheckMoney = false;
     public bool isCheckAutomatization = false;
     bool isCheckPricePlus;
+    public bool checkTimer = false;
     public int[] count;
     public long[] priceBuyNewLayer;
     public long[] priceBuyNewLayer2;
@@ -51,9 +53,16 @@ public class AddMoney : MonoBehaviour
     string DoxodText;
     string AutomatizationDoxodBykva = "";
     public double numberPlusProcent = 1.1f;
+    public int sek = 30;
+    public GameObject obj;
+    public Button buttonAd;
+
+    private YandexSDK sdk;
 
     private void Start()
     {
+        sdk = YandexSDK.instance;
+        sdk.onRewardedAdReward += MultiplyCountLevelOnTenIn30Sekynd;
         isCheckMoney = false;
         AutomatizationInStart();
         PlusProcentInStart();
@@ -319,7 +328,7 @@ public class AddMoney : MonoBehaviour
                     PlusProcentBykva = "М";
                 }
                 PlusProcentText.text = PlusProcent2.ToString() + PlusProcentBykva;
-                PlusProcentText2.text = "Увеличить общую скорость добычи на " + PlusProcent.ToString() + "%";
+                PlusProcentText2.text = "Увеличить общий доход на " + PlusProcent.ToString() + "%";
             }
             if (PlusProcent == 50)
             {
@@ -408,6 +417,23 @@ public class AddMoney : MonoBehaviour
         }     
     }
 
+    public void MultiplyCountLevelOnTenIn30Sekynd(string placement)
+    {
+        if(placement == "time")
+        {
+            Debug.Log(123);
+            if (checkTimer == false)
+            {
+                sek = 30;
+                for (int i = 0; i < countLevel.Length; i++)
+                {
+                    countLevel[i] *= 10;
+                }
+            }
+            StartCoroutine(Timer());
+        }
+    }
+
     IEnumerator AddMoneyLevel()
     {
         while (true)
@@ -428,5 +454,30 @@ public class AddMoney : MonoBehaviour
         noMoneyText.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         noMoneyText.SetActive(false);
+    }
+
+    IEnumerator Timer()
+    {
+        checkTimer = true;
+        buttonAd.enabled = false;
+        while (sek > 0) 
+        {
+            sek--;
+            obj.SetActive(false);
+            timer.enabled = true;
+            timer.text = sek.ToString();
+            yield return new WaitForSeconds(1f);
+            if (sek == 0)
+            {
+                for (int i = 0; i < countLevel.Length; i++)
+                {
+                    countLevel[i] /= 10;
+                }
+                buttonAd.enabled = true;
+                checkTimer = false;
+                timer.enabled = false;
+                obj.SetActive(true);
+            }
+        }
     }
 }
