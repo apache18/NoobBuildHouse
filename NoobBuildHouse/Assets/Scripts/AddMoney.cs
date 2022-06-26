@@ -29,6 +29,7 @@ public class AddMoney : MonoBehaviour
     public GameObject UpgradeImage;
     bool isOpenUpgradeImage = false;
     public bool[] isUpgrade;
+    public bool[] checkBuyLevel;
     bool isCheckMoney = false;
     public int[] count;
     public long[] priceBuyNewLayer;
@@ -36,12 +37,15 @@ public class AddMoney : MonoBehaviour
     public string[] priceText;
     string YlytsitBykvaText;
     string DoxodText;
+    float numberPlusProcent = 1.1f;
 
     private void Start()
     {
         isCheckMoney = false;
         StartCoroutine(AddMoneyLevel());
-        countLevel[0] = 10;
+        PrisvoenieCountLevel();
+
+
         for (int i = 0; i < count.Length; i++)
         {
             count[i] = 1;
@@ -86,7 +90,7 @@ public class AddMoney : MonoBehaviour
 
     public void BuyUpgrade(int number)
     {
-        if (Money >= addMinusMoney[number])
+        if (Money >= addMinusMoney[number] )
         {
             Money -= addMinusMoney[number];
         }
@@ -102,50 +106,49 @@ public class AddMoney : MonoBehaviour
                     Panel[0].SetActive(false);
                     LevelText[0].text = "Слой 2";
                     Player[0].SetActive(true);
-                    countLevel[1] = 50;
+                    checkBuyLevel[1] = true;
                     break;
                 case 10000:
                     Panel[1].SetActive(false);
                     Player[1].SetActive(true);
                     LevelText[1].text = "Слой 3";
-                    countLevel[2] = 250;
+                    checkBuyLevel[2] = true;
                     break;
                 case 300000:
                     Panel[2].SetActive(false);
                     Player[2].SetActive(true);
                     LevelText[2].text = "Слой 4";
-                    countLevel[3] = 15000;
-                    Debug.Log("123");
+                    checkBuyLevel[3] = true;
                     break;
                 case 3000000:
                     Panel[3].SetActive(false);
                     Player[3].SetActive(true);
                     LevelText[3].text = "Слой 5";
-                    countLevel[4] = 150000;
+                    checkBuyLevel[4] = true;
                     break;
                 case 70000000:
                     Panel[4].SetActive(false);
                     Player[4].SetActive(true);
                     LevelText[4].text = "Слой 6";
-                    countLevel[5] = 3500000;
+                    checkBuyLevel[5] = true;
                     break;
                 case 500000000:
                     Panel[5].SetActive(false);
                     Player[5].SetActive(true);
                     LevelText[5].text = "Зелёный куб";
-                    countLevel[6] = 25000000;
+                    checkBuyLevel[6] = true;
                     break;
                 case 10000000000:
                     Panel[6].SetActive(false);
                     Player[6].SetActive(true);
                     LevelText[6].text = "Слой 8";
-                    countLevel[7] = 500000000;
+                    checkBuyLevel[7] = true;
                     break;
                 case 250000000000:
                     Panel[7].SetActive(false);
                     Player[7].SetActive(true);
                     LevelText[7].text = "Слой 9";
-                    countLevel[8] = 12500000000;
+                    checkBuyLevel[8] = true;
                     break;
             }
             Money -= priceBuyNewLayer[number];
@@ -277,13 +280,39 @@ public class AddMoney : MonoBehaviour
         }
     }
 
+    public void UpgradeProcentDoxod()
+    {
+        for (int i = 0; i < countLevel.Length - 1; i++) 
+        {
+            countLevel[i] *= numberPlusProcent;
+        }
+        numberPlusProcent = numberPlusProcent + 0.1f;
+    }
+
+    void PrisvoenieCountLevel()
+    {
+        checkBuyLevel[0] = true;
+        countLevel[0] = 10;
+        countLevel[1] = 50;
+        countLevel[2] = 250;
+        countLevel[3] = 15000;
+        countLevel[4] = 150000;
+        countLevel[5] = 3500000;
+        countLevel[6] = 25000000;
+        countLevel[7] = 500000000;
+        countLevel[8] = 12500000000;
+    }
+
     IEnumerator AddMoneyLevel()
     {
         while (true)
         {
             for (int i = 0; i < countLevel.Length; i++)
             {
-                Money += countLevel[i];
+                if (checkBuyLevel[i] == true)
+                {
+                    Money += countLevel[i];
+                }
             }
             yield return new WaitForSeconds(2f);
         }
