@@ -17,12 +17,22 @@ public class AddMoney : MonoBehaviour
     public int[] countLevel2;
     public double[] countDoxod;
     public Text moneyText;
+    public Text PlusProcentText;
+    public Text PlusProcentText2;
+    public double PlusProcent = 10;
+    public double PlusProcent2;
+    public int PricePlusProcent = 1000;
+    public float AutomatizationDoxodCount;
+    public long AutomatizationDoxodPrice;
+    public long AutomatizationDoxodPrice2;
+    string PlusProcentBykva;
     public Text[] UpgradeText;
     public Text[] PriceNewLevel;
     public Text[] YlytsitText;
     public Text[] Doxod;
     public Text[] LevelText;
-    
+    public Text AutomatizationDoxodText;
+    public Text AutomatizationDoxodPriceText;
     public GameObject[] Panel;
     public GameObject[] Player;
     public GameObject noMoneyText;  
@@ -31,20 +41,24 @@ public class AddMoney : MonoBehaviour
     public bool[] isUpgrade;
     public bool[] checkBuyLevel;
     bool isCheckMoney = false;
+    public bool isCheckAutomatization = false;
+    bool isCheckPricePlus;
     public int[] count;
     public long[] priceBuyNewLayer;
     public long[] priceBuyNewLayer2;
     public string[] priceText;
     string YlytsitBykvaText;
     string DoxodText;
-    float numberPlusProcent = 1.1f;
+    string AutomatizationDoxodBykva = "";
+    public double numberPlusProcent = 1.1f;
 
     private void Start()
     {
         isCheckMoney = false;
+        AutomatizationInStart();
+        PlusProcentInStart();
         StartCoroutine(AddMoneyLevel());
         PrisvoenieCountLevel();
-
 
         for (int i = 0; i < count.Length; i++)
         {
@@ -282,11 +296,63 @@ public class AddMoney : MonoBehaviour
 
     public void UpgradeProcentDoxod()
     {
-        for (int i = 0; i < countLevel.Length - 1; i++) 
+        if (Money >= PricePlusProcent && isCheckPricePlus != true)
         {
-            countLevel[i] *= numberPlusProcent;
+            Money -= PricePlusProcent;
+            PlusProcent += 10;
+            if (PlusProcent <= 50)
+            {
+                PricePlusProcent *= 10;
+                for (int i = 0; i < countLevel.Length; i++)
+                {
+                    countLevel[i] = Math.Round(countLevel[i] * numberPlusProcent);
+                }
+                numberPlusProcent = numberPlusProcent + 0.1;
+                if (PricePlusProcent >= 1000 && PricePlusProcent < 1000000)
+                {
+                    PlusProcent2 = PricePlusProcent / 1000;
+                    PlusProcentBykva = "К";
+                }
+                if (PricePlusProcent >= 1000000 && PricePlusProcent < 1000000000)
+                {
+                    PlusProcent2 = PricePlusProcent / 1000000;
+                    PlusProcentBykva = "М";
+                }
+                PlusProcentText.text = PlusProcent2.ToString() + PlusProcentBykva;
+                PlusProcentText2.text = "Увеличить общую скорость добычи на " + PlusProcent.ToString() + "%";
+            }
+            if (PlusProcent == 50)
+            {
+                PlusProcentText.text = "max";
+                isCheckPricePlus = true;
+                PlusProcent = 0;
+            }
         }
-        numberPlusProcent = numberPlusProcent + 0.1f;
+        else if (Money < PricePlusProcent && isCheckPricePlus != true) 
+        {
+            StartCoroutine(OpenNoMoney());
+        }
+    }
+
+    void PlusProcentInStart()
+    {
+        PlusProcentBykva = "К";
+        PlusProcent2 = 1;
+        PlusProcent = 10;
+        PlusProcentText.text = PlusProcent2.ToString() + PlusProcentBykva;
+        PlusProcentText2.text = "Увеличить общую скорость добычи на " + PlusProcent.ToString() + "%";
+
+    }
+
+    void AutomatizationInStart()
+    {
+        AutomatizationDoxodCount = 2f;
+        AutomatizationDoxodPrice2 = 1;
+        AutomatizationDoxodPrice = 1000;
+        AutomatizationDoxodBykva = "К";
+        AutomatizationDoxodText.text = "Скорость добычи: удар/в " + AutomatizationDoxodCount.ToString() + "секунду";
+        AutomatizationDoxodPriceText.text = AutomatizationDoxodPrice2.ToString() + AutomatizationDoxodBykva;
+
     }
 
     void PrisvoenieCountLevel()
@@ -303,6 +369,45 @@ public class AddMoney : MonoBehaviour
         countLevel[8] = 12500000000;
     }
 
+    public void UpgradeAutomatizationDoxod()
+    {
+        if (Money >= AutomatizationDoxodPrice && isCheckAutomatization != true)
+        {
+            Money -= AutomatizationDoxodPrice;
+            AutomatizationDoxodPrice *= 10;
+            AutomatizationDoxodCount = ((float)Math.Round(AutomatizationDoxodCount - 0.4f, 2));
+            if (AutomatizationDoxodCount >= 0.4f)  
+            {
+                if (AutomatizationDoxodPrice >= 1000 && AutomatizationDoxodPrice < 1000000)
+                {
+                    AutomatizationDoxodBykva = "К";
+                    AutomatizationDoxodPrice2 = AutomatizationDoxodPrice / 1000;
+                }
+                if (AutomatizationDoxodPrice >= 1000000 && AutomatizationDoxodPrice < 1000000000)
+                {
+                    AutomatizationDoxodPrice2 = AutomatizationDoxodPrice / 1000000;
+                    AutomatizationDoxodBykva = "М";
+                }
+                if (AutomatizationDoxodPrice >= 1000000000 && AutomatizationDoxodPrice < 1000000000000)
+                {
+                    AutomatizationDoxodPrice2 = AutomatizationDoxodPrice / 1000000000;
+                    AutomatizationDoxodBykva = "B";
+                }
+                AutomatizationDoxodText.text = "Скорость добычи: удар/в " + AutomatizationDoxodCount.ToString() + "секунду";
+                AutomatizationDoxodPriceText.text = AutomatizationDoxodPrice2.ToString() + AutomatizationDoxodBykva;
+            }
+            if (AutomatizationDoxodCount < 0.45f && AutomatizationDoxodCount > 0.35f) 
+            {
+                AutomatizationDoxodPriceText.text = "max";
+                isCheckAutomatization = true;
+            }
+        }
+        else if (isCheckAutomatization != true) 
+        {
+            StartCoroutine(OpenNoMoney());
+        }     
+    }
+
     IEnumerator AddMoneyLevel()
     {
         while (true)
@@ -314,7 +419,7 @@ public class AddMoney : MonoBehaviour
                     Money += countLevel[i];
                 }
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(AutomatizationDoxodCount);
         }
     }
 
