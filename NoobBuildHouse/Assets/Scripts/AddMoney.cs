@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
-
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
+
 public class AddMoney : MonoBehaviour
 {
     public double Money;
@@ -57,12 +58,8 @@ public class AddMoney : MonoBehaviour
     public GameObject obj;
     public Button buttonAd;
 
-    private YandexSDK sdk;
-
     private void Start()
     {
-        sdk = YandexSDK.instance;
-        sdk.onRewardedAdReward += MultiplyCountLevelOnTenIn30Sekynd;
         isCheckMoney = false;
         AutomatizationInStart();
         PlusProcentInStart();
@@ -121,6 +118,7 @@ public class AddMoney : MonoBehaviour
 
     public void BuyNewLayer(int number)
     {
+        ShowAd();
         if (Money >= priceBuyNewLayer[number])
         {
             switch (priceBuyNewLayer[number])
@@ -417,21 +415,18 @@ public class AddMoney : MonoBehaviour
         }     
     }
 
-    public void MultiplyCountLevelOnTenIn30Sekynd(string placement)
+    public void MultiplyCountLevelOnTenIn30Sekynd()
     {
-        if(placement == "time")
+        ShowAdLong();
+        if (checkTimer == false)
         {
-            Debug.Log(123);
-            if (checkTimer == false)
+            sek = 30;
+            for (int i = 0; i < countLevel.Length; i++)
             {
-                sek = 30;
-                for (int i = 0; i < countLevel.Length; i++)
-                {
-                    countLevel[i] *= 10;
-                }
+                countLevel[i] *= 10;
             }
-            StartCoroutine(Timer());
         }
+        StartCoroutine(Timer());
     }
 
     IEnumerator AddMoneyLevel()
@@ -479,5 +474,15 @@ public class AddMoney : MonoBehaviour
                 obj.SetActive(true);
             }
         }
+    }
+
+    public void ShowAd()
+    {
+        YandexGame.FullscreenShow();
+    }
+
+    public void ShowAdLong()
+    {
+        YandexGame.RewVideoShow(0);
     }
 }
