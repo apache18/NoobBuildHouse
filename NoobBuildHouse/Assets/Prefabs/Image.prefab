@@ -750,7 +750,7 @@ GameObject:
   - component: {fileID: 6208316043666964858}
   - component: {fileID: 6208316043666964857}
   m_Layer: 5
-  m_Name: Text
+  m_Name: DoxodText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -772,7 +772,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -12.22, y: 22.800003}
+  m_AnchoredPosition: {x: -12.220001, y: 22.800003}
   m_SizeDelta: {x: -94.44162, y: 34.256035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6208316043666964858
@@ -1021,17 +1021,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.0001
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: BuyUpgrade
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1070,8 +1059,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 43.07}
-  m_SizeDelta: {x: 29.687935, y: 25.901947}
+  m_AnchoredPosition: {x: 5.55, y: 43.07}
+  m_SizeDelta: {x: 35.24015, y: 25.901947}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2476405710916681489
 CanvasRenderer:
@@ -1113,9 +1102,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'max
-
-'
+  m_Text: "\u043C\u0430\u043A\u0441\n"
 --- !u!1 &8354165742340327686
 GameObject:
   m_ObjectHideFlags: 0

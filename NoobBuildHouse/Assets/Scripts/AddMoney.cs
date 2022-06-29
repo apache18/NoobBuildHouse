@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 public class AddMoney : MonoBehaviour
 {
@@ -89,7 +88,7 @@ public class AddMoney : MonoBehaviour
                 case 10000000000:
                 case 250000000000:
                     priceBuyNewLayer2[i] = priceBuyNewLayer[i] / 1000000000;
-                    priceText[i] = "B";
+                    priceText[i] = "В";
                     break;
             }
            
@@ -118,7 +117,6 @@ public class AddMoney : MonoBehaviour
 
     public void BuyNewLayer(int number)
     {
-        ShowAd();
         if (Money >= priceBuyNewLayer[number])
         {
             switch (priceBuyNewLayer[number])
@@ -205,7 +203,7 @@ public class AddMoney : MonoBehaviour
         }
         if (count[number] == 5)
         {
-            UpgradeText[number].text = "max";
+            UpgradeText[number].text = "макс";
             isUpgrade[number] = true;
         }
         else if (Money < minusMoney[number]) 
@@ -230,7 +228,7 @@ public class AddMoney : MonoBehaviour
         }
         else if (Money > 1000000000 /*&& Money < 1000000000000*/)
         {
-            money = "B";
+            money = "В";
             Money2 = Math.Round(((float)(Money / 1000000000)), 2);
             isCheckMoney = true;
         }
@@ -266,7 +264,7 @@ public class AddMoney : MonoBehaviour
             if (minusMoney[i] >= 1000000000 )
             {
                 minusMoney2[i] = minusMoney[i] / 1000000000;
-                YlytsitBykvaText = "B";
+                YlytsitBykvaText = "В";
             }
             if (countLevel[i] >= 1000 && countLevel[i] < 1000000)
             {
@@ -281,7 +279,7 @@ public class AddMoney : MonoBehaviour
             else if (countLevel[i] >= 1000000000)
             {
                 countDoxod[i] = countLevel[i] / 1000000000;
-                DoxodText = "B";
+                DoxodText = "В";
             }
             else
             {
@@ -330,7 +328,7 @@ public class AddMoney : MonoBehaviour
             }
             if (PlusProcent == 50)
             {
-                PlusProcentText.text = "max";
+                PlusProcentText.text = "макс";
                 isCheckPricePlus = true;
                 PlusProcent = 0;
             }
@@ -347,7 +345,7 @@ public class AddMoney : MonoBehaviour
         PlusProcent2 = 1;
         PlusProcent = 10;
         PlusProcentText.text = PlusProcent2.ToString() + PlusProcentBykva;
-        PlusProcentText2.text = "Увеличить общую скорость добычи на " + PlusProcent.ToString() + "%";
+        PlusProcentText2.text = "Увеличить общий доход на " + PlusProcent.ToString() + "%";
 
     }
 
@@ -356,7 +354,7 @@ public class AddMoney : MonoBehaviour
         AutomatizationDoxodCount = 2f;
         AutomatizationDoxodPrice2 = 1;
         AutomatizationDoxodPrice = 1000;
-        AutomatizationDoxodBykva = "К";
+        AutomatizationDoxodBykva = "к";
         AutomatizationDoxodText.text = "Скорость добычи: удар/в " + AutomatizationDoxodCount.ToString() + "секунду";
         AutomatizationDoxodPriceText.text = AutomatizationDoxodPrice2.ToString() + AutomatizationDoxodBykva;
 
@@ -398,14 +396,14 @@ public class AddMoney : MonoBehaviour
                 if (AutomatizationDoxodPrice >= 1000000000 && AutomatizationDoxodPrice < 1000000000000)
                 {
                     AutomatizationDoxodPrice2 = AutomatizationDoxodPrice / 1000000000;
-                    AutomatizationDoxodBykva = "B";
+                    AutomatizationDoxodBykva = "В";
                 }
                 AutomatizationDoxodText.text = "Скорость добычи: удар/в " + AutomatizationDoxodCount.ToString() + "секунду";
                 AutomatizationDoxodPriceText.text = AutomatizationDoxodPrice2.ToString() + AutomatizationDoxodBykva;
             }
             if (AutomatizationDoxodCount < 0.45f && AutomatizationDoxodCount > 0.35f) 
             {
-                AutomatizationDoxodPriceText.text = "max";
+                AutomatizationDoxodPriceText.text = "макс";
                 isCheckAutomatization = true;
             }
         }
@@ -417,7 +415,6 @@ public class AddMoney : MonoBehaviour
 
     public void MultiplyCountLevelOnTenIn30Sekynd()
     {
-        ShowAdLong();
         if (checkTimer == false)
         {
             sek = 30;
@@ -476,13 +473,4 @@ public class AddMoney : MonoBehaviour
         }
     }
 
-    public void ShowAd()
-    {
-        YandexGame.FullscreenShow();
-    }
-
-    public void ShowAdLong()
-    {
-        YandexGame.RewVideoShow(0);
-    }
 }
